@@ -124,9 +124,9 @@ WHERE
 # Standardizing multiple colors
 After the success of standardizing the naming of GRAY-colored vehicles, you decide to extend this approach to additional colors. The primary colors RED, BLUE, and YELLOW will be used for extending the color name standardization approach. In this exercise, you will:
 
-Find vehicle_color values that are similar to RED, BLUE, or YELLOW.
-Handle both the ambiguous vehicle_color value BL and the incorrectly identified vehicle_color value BLA using pattern matching.
-Update the vehicle_color values with strong similarity to RED, BLUE, or YELLOW to the standard string values.
+- Find vehicle_color values that are similar to RED, BLUE, or YELLOW.
+- Handle both the ambiguous vehicle_color value BL and the incorrectly identified vehicle_color value BLA using pattern matching.
+- Update the vehicle_color values with strong similarity to RED, BLUE, or YELLOW to the standard string values.
 
 ```UPDATE 
 	parking_violation pv
