@@ -177,3 +177,30 @@ Complete the query using the regular expression pattern ' +' so that one or more
 FROM 
     film_permit;
 ```
+
+# Chapter 1 Summary
+
+**Your recent learnings**
+--When you left 2 days ago, you worked on Missing, Duplicate, and Invalid Data, chapter 2 of the course Cleaning Data in PostgreSQL Databases. Here is what you covered in your last lesson:
+--You learned about the importance of data cleaning in PostgreSQL, focusing on string similarity and pattern matching techniques to identify and clean messy data. Here are the key points you covered:
+--Soundex Algorithm: This algorithm encodes the sound of words into a 4-character code, allowing you to compare strings that sound similar but are spelled differently. For example, different spellings of "Fontainebleau" all produce the Soundex code F535.
+--fuzzystrmatch Module: This PostgreSQL extension provides functions like SOUNDEX() and DIFFERENCE() for fuzzy string matching. You enabled it using the CREATE EXTENSION command.
+--DIFFERENCE() Function: This function compares the Soundex codes of two strings and returns a value between 0 and 4, indicating how similar the strings sound. For example, DIFFERENCE('pair', 'pear') returns 4 because they sound identical.
+
+--Practical Application: You applied these concepts to clean inconsistent data, such as standardizing vehicle color names in a parking_violation table.
+
+```SELECT
+  summons_number,
+  vehicle_color
+FROM
+  parking_violation
+WHERE
+  DIFFERENCE(vehicle_color, 'GRAY') = 4;
+```
+--UPDATE Statement: You learned to unify disparate values using an UPDATE statement, ensuring consistency in your dataset.
+By mastering these techniques, you can efficiently clean and standardize data in PostgreSQL, making it more reliable for analysis.
+
+The goal of the next lesson is to learn how to use PostgreSQL functions to clean and format string data for better analysis.
+
+!chapter1summary ch1summary.png
+
