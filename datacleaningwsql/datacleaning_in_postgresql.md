@@ -8,7 +8,8 @@ All P-U (pick-up truck) values in the vehicle_body_type column should use a gene
 Only the first letter in each word in the street_name column should be capitalized.
 The LPAD(), REPLACE(), and INITCAP() functions will be used to effect these changes.
 
-```SELECT
+```sql
+SELECT
   -- Add 0s to ensure violation_location is 4 characters in length
   LPAD(violation_location, 4, '0') AS violation_location,
   -- Replace 'P-U' with 'TRK' in vehicle_body_type column
