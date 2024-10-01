@@ -1460,3 +1460,456 @@ GROUP BY region
 -- Order by avg_total_golds in descending order
 ORDER BY avg_total_golds DESC;
 ```
+
+**Exercise: Most decorated athlete per region**
+
+Your goal for this exercise is to show the most decorated athlete *per region*. To set up this report, you need to leverage the `ROW_NUMBER()` window function, 
+which numbers each row as an incremental integer, where the first row is `1`, the second is `2`, and so on.
+
+Syntax for this window function is `ROW_NUMBER() OVER (PARTITION BY field ORDER BY field)`. Notice how there is no argument within the initial function.
+When set up correctly, a `row_num = 1` represents the most decorated athlete within that region.Note that you cannot use a window calculation within a `HAVING` or `WHERE` statement, so you will need to use a subquery to filter.
+
+Feel free to reference the E:R Diagram. We will use `summer_games_clean` to avoid null handling.
+
+*Instructions*
+1. 
+
+Build a query that pulls `region`, `athlete_name`, and `total_golds` by joining `summer_games_clean`, `athletes`, and `countries`.
+Add a field called `row_num` that uses `ROW_NUMBER()` to assign a regional rank to each athlete based on total golds won.
+
+```sql
+SELECT 
+	-- Query region, athlete_name, and total gold medals
+	c.region, 
+    a.name AS athlete_name, 
+    SUM(s.gold) AS total_golds,
+    -- Assign a regional rank to each athlete
+    ROW_NUMBER() OVER (PARTITION BY c.region ORDER BY SUM(s.gold)) AS row_num
+FROM summer_games_clean AS s
+JOIN athletes AS a
+ON a.id = s.athlete_id
+JOIN countries AS c
+ON c.id = s.country_id
+GROUP BY c.region, a.name;
+```
+
+2. 
+
+Alias the subquery as `subquery`.
+Query `region`, `athlete_name`, and `total_golds`, and then filter for only the top athlete per region.
+
+```sql
+-- Query region, athlete name, and total_golds
+SELECT 
+	region,
+    athlete_name,
+    total_golds
+FROM
+    (SELECT 
+		-- Query region, athlete_name, and total gold medals
+        region, 
+        name AS athlete_name, 
+        SUM(gold) AS total_golds,
+        -- Assign a regional rank to each athlete
+        ROW_NUMBER() OVER (PARTITION BY region ORDER BY SUM(gold) DESC) AS row_num
+    FROM summer_games_clean AS s
+    JOIN athletes AS a
+    ON a.id = s.athlete_id
+    JOIN countries AS c
+    ON s.country_id = c.id
+    -- Alias as subquery
+    GROUP BY region, athlete_name) AS subquery
+-- Filter for only the top athlete per region
+WHERE row_num =1;
+```
+
+### _Comparing Groups_
+
+Reports are mostly used for comparing the performance of different groups. There are a number of ways to compare groups through reports But the approach depends on the type of metric.
+
+In general, there are two types of metrics:
+- Volume metrics: This represent the sum of individual objects and scale with size. When comparing a volume metrics across groups, a percent of total calculati on is a solid approach.
+- Efficiency metrics: This do not scale in size and typically represented as ratio. Examples include _profit margin_ and _revenue per customer_. Efficiency metrics are used to compare 
+performance without being biased to the size of each group. When comparing efficiency metrics, it does not make sense to use percent of total. Instead, we use what is called performance index.
+
+**Exercise:Percent of gdp per country**
+A percent of total calculation is a good way to compare volume metrics across groups. While simply showing the volume metric in a report provides some insights, adding a ratio allows us to easily compare values quickly.
+
+To run a percent of total calculation, take the following steps:
+
+1. Create a window function that outputs the total volume, partitioned by whatever is considered the total. If the entire table is considered the total, then no partition clause is needed.
+2. Run a ratio that divides each row's volume metric by the total volume in the partition.
+In this exercise, you will calculate the percent of gdp for each country relative to the entire world and relative to that country's region.
+
+*Instructions*
+
+1. Construct a query that pulls the `country_gdp` by `region` and `country`, order the query to show the highest `country_gdp` at the top, and then filter out all null gdp values.
+
+```sql
+-- Pull country_gdp by region and country
+SELECT 
+	region,
+    country,
+	SUM(gdp) AS country_gdp
+FROM country_stats AS cs
+JOIN countries AS c
+ON cs.country_id = c.id
+-- Filter out null gdp values
+WHERE gdp IS NOT NULL
+GROUP BY region, country
+-- Show the highest country_gdp at the top
+ORDER BY country DESC;
+```
+
+2. Add the field global_gdp that outputs the total gdp across all countries.
+
+```sql
+
+-- Pull country_gdp by region and country
+SELECT 
+	region,
+    country,
+	SUM(gdp) AS country_gdp,
+    -- Calculate the global gdp
+    SUM(SUM(gdp)) OVER() AS global_gdp
+FROM country_stats AS cs
+JOIN countries AS c
+ON cs.country_id = c.id
+-- Filter out null gdp values
+WHERE gdp IS NOT NULL
+GROUP BY region, country
+-- Show the highest country_gdp at the top
+ORDER BY country_gdp DESC;
+```
+
+3. Create the field `perc_global_gdp` that calculates the percent of global gdp for the given country.
+
+```sql
+-- Pull country_gdp by region and country
+SELECT 
+	region,
+    country,
+	SUM(gdp) AS country_gdp,
+    -- Calculate the global gdp
+    SUM(SUM(gdp)) OVER () AS global_gdp,
+    -- Calculate percent of global gdp
+    SUM(gdp)/SUM(SUM(gdp)) OVER () AS perc_global_gdp
+FROM country_stats AS cs
+JOIN countries AS c
+ON cs.country_id = c.id
+-- Filter out null gdp values
+WHERE gdp IS NOT NULL
+GROUP BY region, country
+-- Show the highest country_gdp at the top
+ORDER BY country_gdp DESC;
+```
+
+4. Add the field `perc_region_gdp`, which runs the same calculation as `perc_global_gdp` but relative to each region.
+
+```sql
+-- Pull country_gdp by region and country
+SELECT 
+	region,
+    country,
+	SUM(gdp) AS country_gdp,
+    -- Calculate the global gdp
+    SUM(SUM(gdp)) OVER () AS global_gdp,
+    -- Calculate percent of global gdp
+    SUM(gdp) / SUM(SUM(gdp)) OVER () AS perc_global_gdp,
+    -- Calculate percent of gdp relative to its region
+    SUM(gdp)/SUM(SUM(gdp)) OVER (PARTITION by region) AS perc_region_gdp
+FROM country_stats AS cs
+JOIN countries AS c
+ON cs.country_id = c.id
+-- Filter out null gdp values
+WHERE gdp IS NOT NULL
+GROUP BY region, country
+-- Show the highest country_gdp at the top
+ORDER BY country_gdp DESC;
+```
+
+**Exercise: GDP per capita performance index**
+
+A performance index calculation is a good way to compare efficiency metrics across groups. A performance index compares each row to a benchmark.
+
+To run a performance index calculation, take the following steps:
+
+1. Create a window function that outputs the performance for the entire partition.
+2. Run a ratio that divides each row's performance to the performance of the entire partition.
+In this exercise, you will calculate the `gdp_per_million` for each country relative to the entire world.
+
+- `gdp_per_million = gdp / pop_in_millions`
+You will reference the `country_stats_cleaned` table, which is a copy of `country_stats` without data type issues.
+
+*Instructions*
+
+1. 
+
+- Update the query to pull `gdp_per_million` by `region` and `country` from `country_stats_clean`.
+- Filter for the year 2016, order by `gdp_per_million` in descending order, and remove all null `gdp` values.
+
+
+```sql
+-- Bring in region, country, and gdp_per_million
+SELECT 
+    region,
+    country,
+    SUM(gdp/pop_in_millions) AS gdp_per_million
+-- Pull from country_stats_clean
+FROM country_stats_clean AS cs
+JOIN countries AS c
+ON c.id = cs.country_id
+-- Filter for 2016 and remove null gdp values
+WHERE EXTRACT(YEAR FROM year) = 2016 AND gdp IS NOT NULL
+GROUP BY region, country
+-- Show highest gdp_per_million at the top
+ORDER BY gdp_per_million DESC;
+```
+2. Add the field `gdp_per_million_total` that takes the total `gdp_per_million` for the entire world.
+```sql
+-- Bring in region, country, and gdp_per_million
+SELECT 
+    region,
+    country,
+    SUM(gdp) / SUM(pop_in_millions) AS gdp_per_million,
+    -- Output the worlds gdp_per_million
+    SUM(SUM(gdp)) OVER() / SUM(SUM(pop_in_millions)) OVER() AS gdp_per_million_total
+-- Pull from country_stats_clean
+FROM country_stats_clean AS cs
+JOIN countries AS c 
+ON cs.country_id = c.id
+-- Filter for 2016 and remove null gdp values
+WHERE year = '2016-01-01' AND gdp IS NOT NULL
+GROUP BY region, country
+-- Show highest gdp_per_million at the top
+ORDER BY gdp_per_million DESC;
+```
+3. Add the `performance_index` that divides the `gdp_per_million` calculation by the `gdp_per_million_total` calculation.
+```sql
+-- Bring in region, country, and gdp_per_million
+SELECT 
+    region,
+    country,
+    SUM(gdp) / SUM(pop_in_millions) AS gdp_per_million,
+    -- Output the worlds gdp_per_million
+    SUM(SUM(gdp)) OVER () / SUM(SUM(pop_in_millions)) OVER () AS gdp_per_million_total,
+    -- Build the performance_index in the 3 lines below
+    (SUM(gdp) / SUM(pop_in_millions))
+    /
+    (SUM(SUM(gdp)) OVER () / SUM(SUM(pop_in_millions)) OVER ()) AS performance_index
+-- Pull from country_stats_clean
+FROM country_stats_clean AS cs
+JOIN countries AS c 
+ON cs.country_id = c.id
+-- Filter for 2016 and remove null gdp values
+WHERE year = '2016-01-01' AND gdp IS NOT NULL
+GROUP BY region, country
+-- Show highest gdp_per_million at the top
+ORDER BY gdp_per_million DESC;
+```
+
+### _Comparing Dates_
+
+ *Month over Month Comparison*: 
+- To build this type of report, we need to pull dates by month. Hence, extracting month from date is crucial. We can use the DATE_PART or EXTRACT funcction to accomplish this.
+- The second step is to include last month's revenue. This is where we use the lAG or LEAD function. Since lag outputs a previous row, we must ORDER in ascending order.
+
+**Exercise:Month-over-month comparison**
+
+In order to compare months, you need to use one of the following window functions:
+
+- `LAG(value, offset)`, which outputs a value from an offset number previous to to the current row in the report.
+- `LEAD(value, offset)`, which outputs a value from a offset number after the current row in the report.
+Your goal is to build a report that shows each country's month-over-month views. A few tips:
+
+You will need to bucket dates into months. To do this, you can use the `DATE_PART()` function.
+You can calculate the percent change using the following formula: `(value)/(previous_value) - 1`.
+If no offset value is included in the `LAG()` or `LEAD()` functions, it will default to 1.
+Since the table stops in the middle of June, the query is set up to only include data to the end of May.
+
+*Instructions*
+
+- From `web_data`, pull in `country_id` and use a `DATE_PART()` function to create `month`.
+- Create `month_views` that pulls the total views within the month.
+- Create `previous_month_views` that pulls the total views from last month for the given country.
+- Create the field `perc_change` that calculates the percent change of this month relative to last month for the given country, where a negative value represents a loss in views and a positive value represents growth.
+
+```sql
+SELECT
+	-- Pull month and country_id
+	DATE_PART('month', date) AS month,
+	country_id,
+    -- Pull in current month views
+    SUM(views) AS month_views,
+    -- Pull in last month views
+    LAG(SUM(views)) OVER(PARTITION BY country_id ORDER BY DATE_PART('month', date)) AS previous_month_views,
+    -- Calculate the percent change
+    SUM(views) / LAG(SUM(views)) OVER(PARTITION BY country_id ORDER BY DATE_PART('month', date))-1 AS perc_change
+FROM web_data
+WHERE date <= '2018-05-31'
+GROUP BY month, country_id;
+```
+
+**Exercise: Week-over-week comparison**
+In the previous exercise, you leveraged the set window of a month to calculate month-over-month changes. But sometimes, you may want to calculate a different time period, such as comparing last 7 days to the previous 7 days. 
+To calculate a value from the last 7 days, you will need to set up a rolling calculation.
+
+In this exercise, you will take the rolling 7 day average of `views` for each `date` and compare it to the previous 7 day average for `views`. This gives a clear week-over-week comparison for every single day.
+
+Syntax for a rolling average is `AVG(value) OVER (PARTITION BY field ORDER BY field ROWS BETWEEN N PRECEDING AND CURRENT ROW)`, where `N` is the number of rows to look back when doing the calculation. Remember that `CURRENT ROW` counts as a row.
+
+*Instructions*
+1. Show daily_views and weekly_avg by date, where weekly_avg is the rolling 7 day average of views.
+
+```sql
+SELECT
+	-- Pull in date and daily_views
+	date,
+	SUM(views) AS daily_views,
+    -- Calculate the rolling 7 day average
+	AVG(SUM(views)) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS weekly_avg
+FROM web_data
+GROUP BY date;
+```
+
+2. 
+
+- Alias the query as `subquery`, add an outer layer that pulls `date` and `weekly_avg`, and order by `date` in descending order.
+- Create the field `weekly_avg_previous` that takes the `weekly_avg` from 7 days prior to the given date.
+
+```sql
+SELECT 
+	-- Pull in date and weekly_avg
+	date,
+    weekly_avg,
+    -- Output the value of weekly_avg from 7 days prior
+    LAG(weekly_avg, 7) OVER(ORDER by date) AS weekly_avg_previous
+FROM
+  (SELECT
+      -- Pull in date and daily_views
+      date,
+      SUM(views) AS daily_views,
+      -- Calculate the rolling 7 day average
+      AVG(SUM(views)) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS weekly_avg
+  FROM web_data
+  -- Alias as subquery
+  GROUP BY date) AS subquery
+-- Order by date in descending order
+ORDER BY date DESC;
+```
+
+3. Calculate `perc_change` where a value of 0 indicates no change, a negative value represents a drop in views versus previous period, and a positive value represents growth.
+```sql
+SELECT 
+	-- Pull in date and weekly_avg
+	date,
+    weekly_avg,
+    -- Output the value of weekly_avg from 7 days prior
+    LAG(weekly_avg,7) OVER (ORDER BY date) AS weekly_avg_previous,
+    -- Calculate percent change vs previous period
+    (weekly_avg / LAG(weekly_avg,7) OVER (ORDER BY date))-1 AS perc_change
+FROM
+  (SELECT
+      -- Pull in date and daily_views
+      date,
+      SUM(views) AS daily_views,
+      -- Calculate the rolling 7 day average
+      AVG(SUM(views)) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS weekly_avg
+  FROM web_data
+  -- Alias as subquery
+  GROUP BY date) AS subquery
+-- Order by date in descending order
+ORDER BY date DESC;
+```
+
+**Exercise: Report 4: Tallest athletes and % GDP by region**
+The final report on the dashboard is Report 4: Avg Tallest Athlete and % of world GDP by Region.
+
+Report Details:
+
+- Column 1 should be region found in the countries table.
+- Column 2 should be avg_tallest, which averages the tallest athlete from each country within the region.
+- Column 3 should be perc_world_gdp, which represents what % of the world's GDP is attributed to the region.
+- Only winter_games should be included (no summer events).
+
+*Instructions*
+
+1. 
+- Pull `country_id` and `height` for winter athletes, group by these two fields, and order by `country_id` and height in descending order.
+- Use `ROW_NUMBER()` to create `row_num`, which numbers rows within a country by height where 1 is the tallest.
+
+```sql
+SELECT 
+	-- Pull in country_id and height
+	country_id,
+    height,
+    -- Number the height of each country's athletes
+    ROW_NUMBER() OVER(PARTITION BY country_id ORDER by height DESC) AS row_num
+FROM winter_games AS w
+JOIN athletes AS a
+ON w.athlete_id = a.id
+GROUP BY country_id, height
+-- Order by country_id and then height in descending order
+ORDER BY country_id, height DESC;
+```
+
+2. Alias your query as `subquery` then use this subquery to join the `countries` table to pull in the `region` and `average_tallest` field, the last of which averages the tallest `height` of each country.
+
+```sql
+SELECT
+	-- Pull in region and calculate avg tallest height
+	region,
+    AVG(height) AS avg_tallest
+FROM countries AS c
+JOIN
+    (SELECT 
+   	    -- Pull in country_id and height
+        country_id, 
+        height, 
+        -- Number the height of each country's athletes
+        ROW_NUMBER() OVER (PARTITION BY country_id ORDER BY height DESC) AS row_num
+    FROM winter_games AS w 
+    JOIN athletes AS a 
+    ON w.athlete_id = a.id
+    GROUP BY country_id, height
+    -- Alias as subquery
+    ORDER BY country_id, height DESC) AS subquery
+ON c.id = subquery.country_id
+-- Only include the tallest height for each country
+WHERE row_num = 1
+GROUP BY region;
+```
+
+3. Join to the `country_stats` table to create the `perc_world_gdp` field that calculates [region's GDP] / [world's GDP].
+```sql
+SELECT
+	-- Pull in region and calculate avg tallest height
+    region,
+    AVG(height) AS avg_tallest,
+    -- Calculate region's percent of world gdp
+    SUM(cs.gdp) / SUM(SUM(cs.gdp)) OVER() AS perc_world_gdp    
+FROM countries AS c
+JOIN
+    (SELECT 
+     	-- Pull in country_id and height
+        country_id, 
+        height, 
+        -- Number the height of each country's athletes
+        ROW_NUMBER() OVER (PARTITION BY country_id ORDER BY height DESC) AS row_num
+    FROM winter_games AS w 
+    JOIN athletes AS a ON w.athlete_id = a.id
+    GROUP BY country_id, height
+    -- Alias as subquery
+    ORDER BY country_id, height DESC) AS subquery
+ON c.id = subquery.country_id
+-- Join to country_stats
+JOIN country_stats AS cs
+ON cs.country_id = subquery.country_id
+-- Only include the tallest height for each country
+WHERE row_num = 1
+GROUP BY region;
+```
+
+
+
+
