@@ -26,7 +26,7 @@ Data Engineers;
 - Remove corrupted data.
 - They develop, construct, test and maintain data architechture such as databases and large scale processing systems.
 
-The demand for big data has increased the demain for big data.
+The demand for big data has increased the demand for Data Engineers.
 
 Big data is xterized by 5 Vs
 
