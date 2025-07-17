@@ -18,7 +18,8 @@ They help define the way data is going to flow, be structured and stored.
 	This is oriented around transactions.
 - OLAP is **Online Analytical Processing** 
 	This is oriented around analytics
-[[!OLTP vs OLAP](OLPT vs OLAP.png)]
+
+[[!OLTPvsOLAP](OLPTvsOLAP.png)]
 
 OLAP and OLTP systems work together. They need each other.
 
