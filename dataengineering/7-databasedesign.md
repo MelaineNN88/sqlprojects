@@ -45,7 +45,7 @@ Data can be stored in three different ways.
 2. Unstructured data
 
 - It is schemaless.
-- It os not clean. e.g, photos, chat logs, MP3
+- It is not clean. e.g, photos, chat logs, MP3
 
 3. Semi-Structured data
 
