@@ -103,8 +103,7 @@ _OLAP Systems_
 - It is a tool used for performaing multi-dimensional analysis at high speeds on large volumes of data from a data warehouse, data mart or any other data storage system.
 - OLAPs system takes stored data in rows and columns (two dimensions), and organizes them into multiple dimensions for fact processing. This is referred to as slicing and dicing.
 
-__OLAP Data Cube;__
-At the core of the OLAP system is the OLAP Data cube.
+OLAP Data Cube; - At the core of the OLAP system is the OLAP Data cube.
 - It has faster data processing speed than a traditional relational databases.
 
 _OLPT_
