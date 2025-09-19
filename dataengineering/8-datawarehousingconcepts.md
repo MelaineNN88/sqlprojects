@@ -116,6 +116,102 @@ _OLPT_
 
 ### _Data Warehouse Data Modeling_
 
+[[!summary](summary_facts_dim.png)]
+
+
+- **Kimball's Four Step Model**: The first step is to select a process for which a data model has to be built. e.g. Invoce and billing, product quality monitoring and Marketing.
+- In step 2, decide on the grain. That is the level to store the fact. The fact is stored at Grain level. That is the level below which a fact cannot be further split. e.g., a song instead of the Album.
+- In Step 3: Chose the dimensions that represent each fact table. E.g, 
+	Time: - Tracking the year, quarter and month is typical for any process that involves time.
+- Identify the facts for each fact table row.
+
+In essence, the four steps are;
+
+1. Select the organizational process.
+2. Declare the grain.
+3. Identify the dimensions.
+4. Identify the facts.
+
+- **Slowly Changing Dimensions**: 
+1. CHange the dimension in the row with the new value.
+2. Create a new ID for the new dimension and attribute that new ID to the value of the new dimension.
+3. Create a new column where the old value of the dimension is stored.
+
+There is a fourth approach called the **Modern approach** HWere Snapshots are used so that when the data is queried, reference is made to the dimensions of the data on specific snapshot epochs.
+
+[[!Summary Data Storage](summary_storage.png)]
+- **Row vs. Column Data Store**:
+
+
+## _Ch4: Implementation and Data Prep_
+
+### _ETL and ELT_
+- ETL and ELT can be used for integrating data into a data warehouse.
+- Both load and transform data. However, they are different in certain respects.
+- In the ETL data is;
+	Extracted
+	Transformed and 
+	Loaded into a data warehouse.
+- In the ELT, data is;
+	Extracted,
+	Loaded into the Warehouse and
+	TRansformed.
+
+The final objecteive is that data is loaded into the data warehouse.
+
+**Understanding the ETL Process: Pros and Cons**
+- Data is transformed as it moves from the Inputs into the Warehouse.
+- Uses seperate system to process data.
+
+Pros:
+- Only clean data is delivered into the warehouse.
+- Lower data storage cost than ELT because it only keeps copies of the transformed data.
+- PII is more manageable. Given the transformation, very min PIIs are stored.
+
+Cons:
+- Original data is not stored, hence any errors will require time consuming task of pulling data from the source to make corrections.
+- Cost of seperate system to transform data.
+
+**Understanding the ELT Process: Pros and Cons**
+- Data is extracted and fully loaded into a data warehouse.
+- The loaded data is transformed in the warehouse.
+
+Pros:
+- No seperate system is required to process the data.
+- Transformations can be rerun without impacting the source systems.
+- Often used for near realtime situation coz the amount of time required to load the data is not connected to the complexity of transformations as is the case in the ETL process.
+
+Cons:
+- Increased storage needs from raw data.
+- Compliance with PII security standards.
+
+ELT processes have grown drastically in recent years as a result of the growth of data warehouses and the almost unliimited staorage capacity.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
