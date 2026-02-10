@@ -287,15 +287,104 @@ Here we'd focus on Natural and Lateral joins.
 
 - The `WHERE` clause can be used to filter the results.
 
-2. **Lateral Joins**: This brings more flexibility. It allows a subquery within a `FROM` clause to access columns from a preceding table or view.
+2. **Lateral Joins**: This brings more flexibility. It allows a subquery within a `FROM` clause to access columns from a preceding table or view. So when we use LATERAL, 
+   the right hand subquery can reference columns from the left hand table, making the queries more dynamic. The `JOIN` keyword is not necessary and the query needs to be aliased 
+   at the end else there is an error.
+
+```sql
+SELECT
+    p.pizza_id,
+    lat.name,
+    lat.category
+FROM pizzas AS p,
+LATERAL
+    ( SELECT *
+      FROM pizza_type AS t
+      WHERE p.pizza_type_id = t.pizza_type_id
+    ) AS lat;
+```
+So why not just use a join? The lateral makes it more flexible in cases where we want the right hand sub-query to perform more complex operations dependent on the left hand table.
 
 
+**Exercise**
+NATURAL JOIN
+Pissa, the ever-expanding pizza delivery enterprise, has a new challenge for you. They're interested in discovering which type of pizza generates the most revenue.
 
+Here is the pizza schema for reference:
 
+[[!Schema Diagram](verticalPart.png)]
 
+Identify the single top-selling pizza category using your knowledge of NATURAL JOIN.
 
+Instructions
+100 XP
+Get the category from the appropriate table.
+NATURAL JOIN the pizza_type table.
+Group the records by category from the pt (pizza_type) table.
+Order the details by total_revenue in descending order and limit to a single record, so that only the top revenue-generating pizza is returned.
 
+```sql
+SELECT
+	-- Get the pizza category
+    pt.category,
+    SUM(p.price * od.quantity) AS total_revenue
+FROM order_details AS od
+NATURAL JOIN pizzas AS p
+-- NATURAL JOIN the pizza_type table
+NATURAL JOIN pizza_type AS pt
+-- GROUP the records by category
+GROUP BY pt.category
+-- ORDER by total_revenue and limit the records
+ORDER BY total_revenue DESC
+LIMIT 1;
+```
 
+**Exercise**
+The world of JOINS
+Previously, you generated insights for Pissa around their sales and revenue by month. Now, you'll look into their most popular pizzas.
 
+Apply your knowledge of joins to get the desired result.
+
+**Instructions 1/2**
+
+Calculate the total revenue using the price column from the pizzas table and the quantity column of the order_details table, respectively.
+Use an appropriate JOIN to include all records from the pizzas table.
+
+```sql
+SELECT COUNT(o.order_id) AS total_orders,
+        AVG(p.price) AS average_price,
+        -- Calculate total revenue
+        sum(p.price*od.quantity) AS total_revenue	
+FROM orders AS o
+LEFT JOIN order_details AS od
+ON o.order_id = od.order_id
+-- Use an appropriate JOIN with the pizzas table
+RIGHT JOIN pizzas AS p
+ON od.pizza_id = p.pizza_id;
+```
+
+**Instructions 2/2**
+
+Select pizza name from pizza_type.
+Perform a NATURAL JOIN with the pizza_type table.
+
+```sql
+SELECT COUNT(o.order_id) AS total_orders,
+        AVG(p.price) AS average_price,
+        -- Calculate total revenue
+        SUM(p.price * od.quantity) AS total_revenue,
+        -- Get the name from the pizza_type table
+		pt.name AS pizza_name
+FROM orders AS o
+LEFT JOIN order_details AS od
+ON o.order_id = od.order_id
+-- Use an appropriate JOIN with the pizzas table
+RIGHT JOIN pizzas p
+ON od.pizza_id = p.pizza_id
+-- NATURAL JOIN the pizza_type table
+NATURAL JOIN pizza_type AS pt
+GROUP BY pt.name, pt.category
+ORDER BY total_revenue desc, total_orders desc
+```
 
 
