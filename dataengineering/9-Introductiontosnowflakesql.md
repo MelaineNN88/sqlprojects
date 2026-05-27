@@ -386,5 +386,6 @@ NATURAL JOIN pizza_type AS pt
 GROUP BY pt.name, pt.category
 ORDER BY total_revenue desc, total_orders desc
 ```
+To be completed before the year ends.
 
 
