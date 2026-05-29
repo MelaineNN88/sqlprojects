@@ -620,7 +620,8 @@ In the lesson on handling missing data, you learned how to categorize missing da
 
 --- Define 1 subquery (of the 5) that will be used to select zip_codes from the nyc_zip_codes table that are in the borough of Manhattan.
 ```sql
-Select all zip codes from the borough of Manhattan
+SELECT all zip codes from the borough of Manhattan
+
 SELECT * FROM nyc_zip_codes WHERE borough = 'Manhattan';
 ```
 Complete the CASE statement sub-queries so that the borough column is populated by the correct borough name when the zip_code is matched.
