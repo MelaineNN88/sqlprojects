@@ -240,7 +240,7 @@ HAVING SUM(gold) >= 3
 -- Sort to show the most gold medals at the top
 ORDER BY gold_medals DESC;
 ```
-[[!Chapter1Summary](ch1Summary.png)]
+![Chapter1Summary](ch1Summary.png)
 
 
 
