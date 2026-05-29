@@ -26,11 +26,11 @@ Identifying *Base reports*
 
 **Exercise: Identify base reports**
 
-[[!whatisfalsehere](identifyingbasereport.png)]
+![whatisfalsehere](identifyingbasereport.png)
 
 **Exercise 2: Building base reports**
 
-[[!Buildingbasereports](buildingbasereports.png)]
+![Buildingbasereports](buildingbasereports.png)
 
 ```sql
 -- Query the sport and distinct number of athletes
@@ -43,7 +43,7 @@ GROUP BY sport
 ORDER BY athletes DESC
 LIMIT 3;
 ```
-[[!Athletesvseventsbysport](athletesvseventsbysport.png)]
+![Athletesvseventsbysport](athletesvseventsbysport.png)
 
 ```sql
 -- Query sport, events, and athletes from summer_games
@@ -64,11 +64,11 @@ Before digging into a specific database, it is good to undertand the E.R diagram
 - Outside of giving a high level overview of the datles and fields, E.R diagrams are a good reference document when planning large queries.
 - By highlighting relevant fields, it is then easy to plan what types of JOINS, UNIONS, or other logics may be performed.
 
-[[!exampleERDiagram](ERdiagram.png)]
+![exampleERDiagram](ERdiagram.png)
 
 **Exercise: age of oldest athlete by Region**
 
-[[!OldestAtheletebyRegion](oldestathletebyregion.png)]
+![OldestAtheletebyRegion](oldestathletebyregion.png)
 
 ```sql
 -- Select the age of the oldest athlete for each region
@@ -84,7 +84,7 @@ JOIN countries as c
 ON s.country_id = c.id
 GROUP BY c.region;
 ```
-[[!numofeventsineachsport](numofeventsineachsport.png)]
+![!numofeventsineachsport](numofeventsineachsport.png)
 
 ```sql
 -- Select sport and events for summer sports
@@ -107,7 +107,7 @@ ORDER BY events DESC;
 !Summaryofprevlearning summaryofprevlearning.png
 
 
-###_Exploring our data_
+### _Exploring our data_
 In the last lesson we looked at ER diagrams and how they can hlep us with knowledge to understand the structure of the data.The relationships between tables and columns.
 That however, is not the only thing that needs to be done. We need to explore our data in order to understand the data.
 
@@ -212,7 +212,7 @@ FROM
 ```
 
 **Exercise: Report 1: Most Decorated Atletes**
-[[!MostdecAthelets|Solid](mostdecoratedsummerathletes.png)]
+![MostdecAthelets|Solid](mostdecoratedsummerathletes.png)
 
 Your job is to create the base report for this element. Base report details:
 
@@ -579,7 +579,7 @@ Report Details:
 - Column 3 should be `athletes`, which represents the unique athletes in the event.
 - Athletes from countries that have had no `nobel_prize_winners` should be excluded.
 - The report should contain 10 events, where events with the most `athletes` show at the top.
-Click to view the [[!E:R Diagram](ER_diagram_pdf.png)]
+Click to view the ![E:R Diagram](ER_diagram_pdf.png)
 
 *Instructions*
 1. Select `event` from the `summer_games` table and create the `athletes` field by counting the distinct number of `athlete_id`.
@@ -658,7 +658,7 @@ GROUP BY event
 ORDER BY athletes DESC
 LIMIT 10;
 ```
-[[!Chapter2Summary](Ch2summary.png)]
+![Chapter2Summary](Ch2summary.png)
 
 ## Chapter 3: Cleaning and validation
 
@@ -694,7 +694,7 @@ SELECT column_name, data_type
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE table_name = 'countries';
 ```
-[[!DatatypesDocs](https://www.postgresql.org/docs/9.5/datatype.html)]
+[Datatypes Docs](https://www.postgresql.org/docs/9.5/datatype.html)
 
 
 **Exercise: Identifying data types**
