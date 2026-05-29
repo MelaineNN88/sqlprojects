@@ -29,7 +29,8 @@ These have differences and similarities in terms of data types, functions, and g
 
 THe majority of Snowflake SQL and PostgreSQL are the Same like
 
-[[!Similar syntax](similar syntax.png)]
+_**Common Syntax**_
+![Similar syntax](similar_syntax.png)]
 
 **Exercise**: Querying using Snowflake SQL
 You are consulting as a Data Engineer at Pissa, an expanding pizza delivery company. Their database has four tables: pizzas, pizza_types, orders, and order_details. You can view each table from the SQL console:
@@ -118,7 +119,7 @@ e.g. `SELECT TO_VARCHAR(86)`
 Result: 86.
 
 *Checking Data Types*: We can use the `DESC TABLE` followed by the table name to get information on all the columns in the table. e.g. `DESC TABLE orders`.
-[[!DESC TABLE](dataeng_DESC_TABLE.png)]
+![DESC TABLE](dataeng_DESC_TABLE.png)
 
 
 **Exercise: Checking data types**
@@ -182,7 +183,7 @@ EXTRACT (<date_or_time_part> FROM <date_or_time_expr>)
  - `SORTING and GROUPING`: Just as in PostGres, we use `ORDER BY` to sort and `GROUP BY` to group data.
  - What sets SNowlake apart is its unique `GROUP BY ALL` feature. This allows GROUPING by all variables in the SELECT list without mentioning each one by one.
 
-[[!summary of functions](summary_fns_sort_group.png)]
+![summary of functions](summary_fns_sort_group.png)
 
 
 
@@ -279,11 +280,11 @@ Here we'd focus on Natural and Lateral joins.
 - It is therefore convenient for quickly matching colu,mns with the ame name across two tables, and elimanates the need for the ON function as well.
 - It joins two tables without explicitly stating the matching conditions.
 
-[[!Natural Join](nat_join_ex.png)]
+![!Natural Join](nat_join_ex.png)
 
 - Trying to specify a `JOIN`ing condition will result in an error.
 
-[[!Error](error_specify_nat_join_con.png)]
+![Error](error_specify_nat_join_con.png)
 
 - The `WHERE` clause can be used to filter the results.
 
@@ -312,7 +313,7 @@ Pissa, the ever-expanding pizza delivery enterprise, has a new challenge for you
 
 Here is the pizza schema for reference:
 
-[[!Schema Diagram](verticalPart.png)]
+![Schema Diagram](verticalPart.png)
 
 Identify the single top-selling pizza category using your knowledge of NATURAL JOIN.
 

@@ -12,7 +12,7 @@
 have a look at the following table;
 ```sql
 SELECT table_schema, table_name
-FROm information_schema.tables;
+FROM information_schema.tables;
 ```
 You can also hae a look at the column names of a certain table. 
 Once you know the name of a table, you can query its columns by accessing the "columns" table.
@@ -30,7 +30,7 @@ WHERE table_name ='pg_config';
 `tables`: information about all tables in your current database
 `columns`: information about all columns in all of the tables in your current database
 …
-In this exercise, you'll only need information from the `'public'` schema, which is specified as the column `table_schema` of the `tables` 
+In this exercise, you'll only need information from the `public` schema, which is specified as the column `table_schema` of the `tables` 
 and `columns` tables. The `'public'` schema holds information about user-defined tables and databases. 
 The other types of `table_schema` hold system information – for this course, you're only interested in user-defined stuff.
 
@@ -55,7 +55,7 @@ WHERE table_name = 'university_professors' AND table_schema = 'public';
 
 - An entity relationship model. 
 - The squares are called **entity types** while circles denote **entity attributes** or colunms.
-- Click to see the graphical representation of [[!Entity Relationship table](entityrelationship.png)]
+- Click to see the graphical representation of [[!Entity ![Relationship table](entityrelationship.png)
 
 
 **Exercise: CREATE your first few TABLEs**
@@ -102,7 +102,7 @@ FROM universities
 
 **Exercise: ADD a COLUMN with ALTER TABLE**
 Oops! We forgot to add the `university_shortname` column to the `professors` table. You've probably already noticed:
-[[!professors](professors.png)]
+![professors](professors.png)
 In chapter 4 of this course, you'll need this column for connecting the professors table with the universities table.
 
 However, adding columns to existing tables is easy, especially if they're still empty.
@@ -124,8 +124,8 @@ ADD COLUMN university_shortname text;
 SELECT * 
 FROM professors
 ```
-**Summary of lessons 1 & 2**
-[[!Summary lessons 1&2](Review_lessons1and2.png)]
+_**Summary of lessons 1 & 2**_
+![Summary lessons 1&2](Review_lessons1and2.png)
 
 ### _Chapter 1: Update your database as the structure changes_
 
@@ -478,7 +478,7 @@ What does null mean.
 - Does not apply to the column.
 
 
-[[!Not Null](settinganddroppingnotnull.png)]
+![Not Null](settinganddroppingnotnull.png)
 
 The UNIQUE constraints on a column makes sure there are no duplicates in a column.
 - It diallows for duplicate values.
@@ -1153,7 +1153,7 @@ DROP COLUMN lastname;
 
 ```
 
-[[!Summary Prev Lessons](prev lessons summary.png)]
+![Summary Prev Lessons](prev_lessons_summary.png)
 
 
 #### _Referential Integrity_

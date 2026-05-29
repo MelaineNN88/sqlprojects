@@ -19,11 +19,11 @@ They help define the way data is going to flow, be structured and stored.
 - OLAP is **Online Analytical Processing** 
 	This is oriented around analytics
 
-[[!OLTPvsOLAP](OLPTvsOLAP.png)]
+![OLTPvsOLAP](OLPTvsOLAP.png)
 
 OLAP and OLTP systems work together. They need each other.
 
-[[!OLTPOLAP](OLTPOLAP.png)]
+![OLTPOLAP](OLTPOLAP.png)
 
 OLTP data is usually stored in an operational database that is pulled and cleaned to create an OLAP data warehouse
 
@@ -205,7 +205,7 @@ Join week_dim and runs_fact.
 Get all the week_id's from July, 2019.
 
 
-[[!Ch1Summary](Ch1Summary.png)]
+![Ch1Summary](Ch1Summary.png)
 
 
 ## Ch2 - Database Schemas and Normalization
@@ -228,7 +228,7 @@ The start schema got it's name because it tends to look like a star with differe
 - The fact table is the same, as it is in the previous example. But the dimension tables extend more.
 - The star schema extends one dimension whereas the snowflake schme extends more than one dimension. This is because the dimension tables are normalized.
 
-[[!star vs Dim Schema](starvsdim.png)]
+![star vs Dim Schema](starvsdim.png)
 
 **What then is Normalization**?
 - It is a database design technique.
@@ -882,7 +882,8 @@ REFRESH MATERIALIZED VIEW genre_count;
 SELECT * FROM genre_count;
 ```
 
-[[!Ch3 Revision](Ch3 Revision.png)]
+_**Summary of previous learning streak**_
+![Ch3 Revision](Ch3_Revision.png)
 
 ## Ch4 Database Management
 
@@ -931,7 +932,7 @@ Alex should be able to use the data analyst role. If Alex no longer need to do t
 
 PostGreSQL has a set of default roles which provide acces to commonly needed privileged capabilities and information. These are in the shot below.
 
-[[!Common PostGreSQL Roles](cmmonpgsqlroles.png)]
+![Common PostGreSQL Roles](cmmonpgsqlroles.png)
 
 #### Benefits and Pitfalls of roles
 
@@ -1031,7 +1032,7 @@ Partitioning fits into **Physical data modeling**.
 There are two types of partitioning:
 1. Vertical Partitioning: In this case, you split a table, even fully normalized and link the table through a common key. See example below.
 
-[[!Vertical partitioning](verticalPart.png)]
+![Vertical partitioning](verticalPart.png)
 
 In this case, the long_description is retrieved very rarely. This could then be stored on a slower medium. Doing this will reduce query time for the first table.
 
@@ -1042,7 +1043,7 @@ You Use declarative partitioning.
 - Then you create the partitions by Using the `PARTITION OF` clause.
 - It is advisable to add an index to the column used for partitioning.
 
-[[!Ex Horizontal Partitioning](horizontalPart.png)]
+![Ex Horizontal Partitioning](horizontalPart.png)
 
 Pros:
 - Indices of heavily used partitions fit in memory.\

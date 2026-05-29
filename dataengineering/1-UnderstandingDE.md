@@ -75,7 +75,7 @@ Data pipelines ensure an efficient flow of data;  In essence, they automate;
 
 ## Chapter 2: Stroring data
 
-### _Data Structures
+### Data Structures
 
 
 **Structured data** is;
@@ -86,9 +86,9 @@ Data pipelines ensure an efficient flow of data;  In essence, they automate;
 - Stored in relational databases.
 - About 20% of data is structured.
 - It is created and queried using SQL which stands for Structured Query Language
-See example of structured data below;
 
-[[!Structured Data](structuredData.png)]
+_See example of structured data below;_
+![Structured Data](structuredData.png)
 
 **Semi-Structured data** is smilar to stuctured data but holds more freedom;
 - It is relatively easy to search and organize.
@@ -98,7 +98,7 @@ See example of structured data below;
 - Stored in NoSQL databases or JSON, XML, or YAML
 See example of semi-structured data below
 
-[[!Semi Structured data](semistructuredData.png)]
+![Semi Structured data](semistructuredData.png)
 
 **Unstructured data** is data that 
 - does not follow a model hence cannot be contained in rows and columns.
@@ -143,7 +143,7 @@ WHERE role LIKE '%Data%';
 ```
 **Database Schema**
 - This shows how the tables in a database relate to each other See diagram below.
-[[!Schema](schema.png)]
+![Schema](schema.png)
 
 There are several implementations of SQL
 - SQL Lite

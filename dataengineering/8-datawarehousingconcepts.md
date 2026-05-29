@@ -34,7 +34,7 @@ _Data Lakes_: Similar to warehouses are built as central store of data.
 - They have both structured and unstructured data.
 - It is easier to make changes to data lakes compared to data warehouses, given the flexibility to hold unstructured data.
 
-[[!Summary](summary_dldwdm.png)]
+![Summary](summary_dldwdm.png)
 
 ### _How data warehouses support organizational analysis_
 
@@ -52,7 +52,7 @@ _Support/Maintenance_
 - Set up BI tools.
 - Testing and deployment.
 
-[[!Matrix](personamatrix.png)]
+![Matrix](personamatrix.png)
 
 
 ## _Ch2: Warehouse Architectures and Properties_
@@ -71,7 +71,7 @@ _Data Presentation_
 - The data is made available to the end user in the data presentation layer. BI and other analysis tools connect to the warehouse and allow end users to interact with the data.
 
 
-[[!Layers of Data warehousing](layersofwarehousing.png)]
+![Layers of Data warehousing](layersofwarehousing.png)
 
 
 ### _The Presentation Layer_
@@ -116,7 +116,8 @@ _OLPT_
 
 ### _Data Warehouse Data Modeling_
 
-[[!summary](summary_facts_dim.png)]
+_**Summary of previous learning**_
+![summary](summary_facts_dim.png)
 
 
 - **Kimball's Four Step Model**: The first step is to select a process for which a data model has to be built. e.g. Invoce and billing, product quality monitoring and Marketing.
@@ -139,7 +140,8 @@ In essence, the four steps are;
 
 There is a fourth approach called the **Modern approach** HWere Snapshots are used so that when the data is queried, reference is made to the dimensions of the data on specific snapshot epochs.
 
-[[!Summary Data Storage](summary_storage.png)]
+_**Summary of recent learnings**_
+![Summary Data Storage](summary_storage.png)
 - **Row vs. Column Data Store**:
 
 
