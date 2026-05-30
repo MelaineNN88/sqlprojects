@@ -1,4 +1,4 @@
-# Applying funtions for string data cleaning in SQL
+## Applying funtions for string data cleaning in SQL
 
 **Exercise**
 A service to provide parking violation recipients with a hard copy of the violation is being re-designed. For proper formatting of the output of the information on the report, some fields needs to be changed from the database representation. The changes are as follows:
