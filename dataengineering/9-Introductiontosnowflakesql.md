@@ -50,7 +50,8 @@ SELECT pizza_type_id,
 FROM pizzas;
 ```
 
-*Exercise*
+**Exercise**
+
 Filtering in Snowflake SQL
 As part of Pissa's migration from PostgreSQL to Snowflake, ensuring data integrity and correctness of the data after migration is crucial.
 
