@@ -268,10 +268,10 @@ SELECT
 - Postgresql provides a function for replacing missing values
 - The `COALESCE` function.
 
-`COALESCE` (arg1, [arg2,...])
+`COALESCE (arg1, [arg2,...])`
 ```sql
 ---In case we want to display  -1 instead of a null score for restaurant inspection results.
-```SELECT
+SELECT
         name,
         COALESCE(score, -1),
         inspection_type
@@ -314,10 +314,10 @@ SELECT COUNT(*) FROM parking_violation WHERE vehicle_body_type = 'Unknown';
 In an effort to reduce the number of missing vehicle_body_type values going forward, your team has decided to embark on a campaign to educate issuing agencies on the need for complete data. However, each campaign will be customized for individual agencies.
 In this exercise, your goal is to use the current missing data values to prioritize these campaigns. You will write a query which outputs the issuing agencies along with the number of records attributable to that agency with a NULL vehicle_body_type. These records will be listed in descending order to determine the order in which education campaigns should be developed.
 
---- Specify two columns for the query results: issuing_agency and num_missing (the number of missing vehicle body types for the issuing agency).
---- Restrict the results such that only NULL values for vehicle_body_type are counted.
---- Group the results by issuing_agency.
---- Order the results by num_missing in descending order.
+- Specify two columns for the query results: issuing_agency and num_missing (the number of missing vehicle body types for the issuing agency).
+- Restrict the results such that only NULL values for vehicle_body_type are counted.
+- Group the results by issuing_agency.
+- Order the results by num_missing in descending order.
 
 ```sql
 SELECT
@@ -355,7 +355,7 @@ FROM
 --- This arises when record values are dupliated for some columns values, while introducing ambiguity for column values which they differ.
 --- Simply deleting duplicate values in this case doesn't is not appropriate due to the ambiguity.
 
-**Exercise**
+# **Exercise**
 ## Duplicate parking violations
 There have been a number of complaints indicating that some New York residents have been receiving multiple parking tickets for a single violation. This is resulting in the affected residents having to incur additional legal fees for a single incident. There is justifiable anger about this situation. You have been tasked with identifying records that reflect this duplication of violations.
 
@@ -512,7 +512,9 @@ WHERE
   plate_type NOT SIMILAR TO '[A-Z][A-Z][A-Z]';
 ```
 
----2. 
+2. Consult the notes on
+[DataCamp](https://www.datacamp.com)
+
 
 3. Write a query returning records with a vehicle_make not including an uppercase letter, a forward slash `(/)`, or a space `(\s)`.
 ```sql
@@ -892,7 +894,7 @@ FROM (
 ) sub
 ```
 
----The previous query results are stored in a table named time_differences which contains the columns hours and minutes. Count the number of violation_time values that are within 0 hours and 59 minutes of the record's to_hours_in_effect value.
+-- The previous query results are stored in a table named time_differences which contains the columns hours and minutes. Count the number of violation_time values that are within 0 hours and 59 minutes of the record's to_hours_in_effect value.
 
 ```sql
 SELECT
