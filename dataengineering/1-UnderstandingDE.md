@@ -1,4 +1,4 @@
-# Understanding Data Engineering (And all - Test)
+# Understanding Data Engineering
 
 ## Chapter 1: What is data Engineering
 
