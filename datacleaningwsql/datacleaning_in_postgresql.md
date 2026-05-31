@@ -25,6 +25,7 @@ FROM
 **Exercise**
 
 # Classifying parking violations by time of day
+
 There have been some concerns raised that parking violations are not being issued uniformly throughout the day. You have been tasked with associating parking violations with the time of day of issuance. You determine that the simplest approach to completing this task is to create a new column named morning. This field will be populated with (the integer) 1 if the violation was issued in the morning (between 12:00 AM and 11:59 AM), and, (the integer) 0, otherwise. The time of issuance is recorded in the violation_time column of the parking_violation table. This column consists of 4 digits followed by an A (for AM) or P (for PM).
 
 In this exercise, you will populate the morning column by matching patterns for violation_times occurring in the morning.
